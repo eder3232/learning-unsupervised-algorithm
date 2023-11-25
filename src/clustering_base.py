@@ -1,6 +1,6 @@
 import matplotlib.animation as animation
 import matplotlib.pyplot as plt
-from matplotlib import colormaps
+from matplotlib import cm
 import numpy as np
 
 
@@ -40,7 +40,7 @@ class clustering_base:
         ax.set_ylabel(ylabel)
         color = (self.clustersave[nlevel] + 1) / self.ncluster
         scat = ax.scatter(
-            self.X[0, :], self.X[1, :], color=colormaps.jet(color), marker="o", s=15
+            self.X[0, :], self.X[1, :], color=cm.jet(color), marker="o", s=15
         )
 
     def plot_cluster_animation(
@@ -59,14 +59,12 @@ class clustering_base:
         else:
             nframe = nlevel
         # scatter plot all data points in same color
-        scat = ax.scatter(
-            self.X[0, :], self.X[1, :], color=colormaps.jet(0), marker="o", s=15
-        )
+        scat = ax.scatter(self.X[0, :], self.X[1, :], color=cm.jet(0), marker="o", s=15)
 
         # update function for animation change color according to cluster assignment
         def update(i, scat, clustersave, ncluster):
             array_color_data = (1 + self.clustersave[i]) / (self.ncluster + 1e-16)
-            scat.set_color(colormaps.jet(array_color_data))
+            scat.set_color(cm.jet(array_color_data))
             return (scat,)
 
         # create animation
@@ -80,6 +78,7 @@ class clustering_base:
             interval=interval,
             blit=True,
         )
+
         # uncomment to create mp4
         # need to have ffmpeg installed on your machine - search for ffmpeg on internet to get detaisl
         # ani.save('Clustering_Animation.mp4', writer='ffmpeg')
